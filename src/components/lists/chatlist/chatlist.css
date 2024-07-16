@@ -66,5 +66,12 @@
                 font-weight: 300;
             }
         }
+        span{
+            display: flex;
+            flex-direction: column;
+            background-color: #08093d35;
+            padding: 5px;
+            border-radius: 5px;
+           }
     }
 }

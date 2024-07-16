@@ -83,7 +83,7 @@
         flex-direction: column;
         gap: 5px;
 
-       img {
+       img{
           width: 100%;
           height: 300px;
           border-radius: 10px;
@@ -126,6 +126,9 @@
       border: none;
       outline: none;
       color: white;
+      &:disabled{
+        cursor:not-allowed;
+      }
     }
     .emoji {
       position: relative;
@@ -133,6 +136,9 @@
         position: absolute;
         bottom: 50px;
         left: 0;
+      }
+      &:disabled{
+        cursor: not-allowed;
       }
     }
     .sendButton {
@@ -142,6 +148,10 @@
       border: none;
       border-radius: 5px;
       cursor: pointer;
+      &:disabled{
+        background-color: #5182feb4;
+        cursor:not-allowed;
+      }
     }
   }
 }

@@ -5,11 +5,13 @@ import { useUserStore } from '../../../lib/userStore';
 import { doc, getDoc, onSnapshot, updateDoc } from 'firebase/firestore';
 import { db } from '../../../lib/firebase';
 import { useChatStore } from '../../../lib/chatStore';
+import { format } from 'timeago.js';
 const ChatList = () => {
     const [addMode,setAddMode]=useState(false);
     const[chats,setChats]=useState([]);
+    const [input,setInput]=useState("");
     const {currentUser}=useUserStore();
-    const {chatId,changeChat}=useChatStore();
+    const {chatId,changeChat,user}=useChatStore();
     //console.log(chatId)
     useEffect(()=>{
      const unSub=onSnapshot(doc(db,"userchats",currentUser.id),async(res)=>{
@@ -27,7 +29,7 @@ const ChatList = () => {
       unSub();
      }
     },[currentUser.id])
-    console.log(chats);
+   console.log(chats);
     const handleSelect=async (chat)=>{
       //console.log(chat.chatId,chat.user)
       const userChats=chats.map(item=>{
@@ -49,24 +51,27 @@ const ChatList = () => {
         console.log(err);
       }
     }
+    const filteredChats=chats.filter((c)=>c.user.username.toLowerCase().includes(input.toLowerCase())
+  );
   return (
     <div className='chatList'>
       <div className="search">
         <div className="searchBar">
             <img src="./search.png" alt="" />
-            <input type="text" placeholder='search'></input>
+            <input type="text" placeholder='search'onChange={(e)=>setInput(e.target.value)}/>
         </div>
         <img src={addMode?"./minus.png":"./plus.png"} alt="" className='add'onClick={()=>setAddMode((prev)=>!prev)}/>
       </div>
-      {chats.map((chat)=>(
+      {filteredChats.map((chat)=>(
       <div className="items" key={chat.chatId} onClick={()=>handleSelect(chat)}
       style={{backgroundColor:chat?.isSeen?"transparent":"#5183fe"}}
       >
-        <img src={chat.user.avatar || "./avatar.png"} alt=""/>
+        <img src={chat.user.blocked.includes(currentUser.id)?"./avatar.png":chat.user.avatar || "./avatar.png"} alt=""/>
         <div className="texts">
-            <span>{chat.user.username}</span>
+            <span>{chat.user.blocked.includes(currentUser.id)?"user":chat.user.username}</span>
             <p>{chat.lastMessage}</p>
         </div>
+        <span className="time">{format(chat.updatedAt)}</span>
       </div>
     ))}
       {addMode && <AddUser/>}

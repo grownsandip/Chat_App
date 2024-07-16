@@ -17,7 +17,7 @@ export const useChatStore = create((set) => ({
         chatId,
         user: null,
         isCurrentUserBlocked: true,
-        isReceiverBlocked: false,
+        isRecieverBlocked: false,
       });
     }
 
@@ -27,7 +27,7 @@ export const useChatStore = create((set) => ({
         chatId,
         user: user,
         isCurrentUserBlocked: false,
-        isReceiverBlocked: true,
+        isRecieverBlocked: true,
       });
     } 
     else {
@@ -35,7 +35,7 @@ export const useChatStore = create((set) => ({
         chatId,
         user,
         isCurrentUserBlocked: false,
-        isReceiverBlocked: false,
+        isRecieverBlocked: false,
       });
     }
   },
